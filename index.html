@@ -1,80 +1,29 @@
 <!DOCTYPE  html>
-<html lang="en">
+<html lang="es">
 <head>
-    <title>UNO</title>
-    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="style_classic.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rectángulo a pantalla completa</title>
-    <style>
-        body {
-            margin: 0;
-            height: 100vh;
-        }
-        .fondo {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: burlywood;
-        }
-        .mazoj1 {
-            position: fixed;
-            top: 80%;
-            left: 25%;
-            width: 100vh;
-            height: 18vh;
-            background-color: teal;
-        }
-        .mazoj2 {
-            position: fixed;
-            top: 10%;
-            left: 2%;
-            width: 18vh;
-            height: 80vh;
-            background-color: teal;
-        }
-        .mazoj3 {
-            position: fixed;
-            top: 2%;
-            left: 25%;
-            width: 100vh;
-            height: 18vh;
-            background-color: teal;
-        }
-        .mazoj4 {
-            position: fixed;
-            top: 10%;
-            left: 89%;
-            width: 18vh;
-            height: 80vh;
-            background-color: teal;
-        }
-        .descarte {
-            position: fixed;
-            top: 27%;
-            left: 35%;
-            width: 35vh;
-            height: 45vh;
-            background-color: teal;
-        }
-        .mazo{
-            position: fixed;
-            top: 32%;
-            left: 55%;
-            width: 25vh;
-            height: 35vh;
-            background-color: teal;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <title>UNO</title>
 </head>
 <body>
-    <div class="fondo"></div>
-    <div class="mazoj1"></div>
-    <div class="mazoj2"></div>
-    <div class="mazoj3"></div>
-    <div class="mazoj4"></div>
-    <div class="descarte"></div>
-    <div class="mazo"></div>
+    <div id="bottom" class="box horizontal">
+        <div id="jmain" class="carta"></div>
+    </div>
+    <div id="left" class="box vertical">
+        <div id="jleft" class="carta"></div>
+    </div>
+    <div id="top" class="box horizontal">
+        <div class="carta"></div>
+    </div>
+    <div id="rigth" class="box vertical">
+        <div id="jrigth" class="carta"></div>
+    </div>
+    <div class="box descarte">
+        <div id="descarte" class="carta"></div>
+    </div>
+    <div class="box pila">
+        <div id="pila" class="carta"></div>
+    </div>
 </body>
 </html>
