@@ -1,0 +1,274 @@
+body{
+    background-image: url('assets/images/fondo_rojo.jpg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    overflow-y: hidden;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+:root{
+    --color-cajas: darkred;
+    --radio: 12px;
+    --largo: 85vh;
+    --ancho: 18vh;
+    --posicion-tlr: 2%;
+    --posicion-left: 26%;
+    --posocion-top: 2%;
+    --cartas-espacio-horizontal: -6vh;
+    --cartas-espacio-vertical: -10vh;
+}
+#out{
+    background-color: #1A374D;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 32px;
+    font-weight: bold;
+    padding: 18px 35px;
+    min-width: 180px;
+    height: auto;
+    position: fixed;
+    bottom: 20px;
+    left: 5vh;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease-in-out;
+}
+#out:hover{
+    background-color: #0E293F;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+}
+#out:active{
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+/*Aquí inicia todo lo que tiene que ver con el boton*/
+.uno{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    position: fixed;
+    bottom: 22%;
+    right: 14%;
+    width: 20vh;
+    height: 20vh;
+    background-color: #C62828;
+    border-radius: 100%;
+    border: 5px solid #8B0000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #FFEB3B;
+    font-size: 7vh;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    -webkit-text-stroke: 3px black;
+    opacity: 0.5;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4),
+                inset 0 -3px 5px rgba(0, 0, 0, 0.3),
+                inset 0 3px 5px rgba(255, 255, 255, 0.2);
+    transition: all 0.2s ease-out;
+}
+/*Se supone así se debe ver cuando está activo*/
+#uno{
+    animation: pulse 1s infinite;/*la animacion se debe detener al pisar el boton*/
+    opacity: 1;
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.6),
+                inset 0 -3px 5px rgba(0, 0, 0, 0.3),
+                inset 0 3px 5px rgba(255, 255, 255, 0.2);
+}
+#uno:hover{
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.5),
+                0 0 25px 10px rgba(255, 234, 0, 0.8);
+    cursor: pointer;
+}
+#uno:active{
+    transform: translateY(1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4),
+                inset 0 1px 3px rgba(0, 0, 0, 0.5),
+                inset 0 -1px 3px rgba(255, 255, 255, 0.1);
+    border-color: #FFEB3B;
+}
+/*parte de la animacion, hace más pequeño y más grande el botón*/
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px 5px rgb(236, 236, 9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+/*Aquí inicia todo lo que tiene que ver con el boton*/
+.box{
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    background-color: var(--color-cajas);
+    border-radius: var(--radio);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+    transition: all 0.2s ease-out;
+}
+.box.horizontal{
+    width: var(--largo);
+    height: var(--ancho);
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+#bottom{
+    bottom: 4%;
+    left: 50%;
+    transform: translateX(-50%) scale(1.3);
+    z-index: 2;
+}
+#top{
+    top: var(--posicion-tlr);
+    left: 50%;
+    transform: translateX(-50%);
+}
+.box.vertical{
+    flex-direction: column;
+    width: var(--ancho);
+    height: var(--largo);
+    justify-content: center;
+    align-items: center;
+}
+#left{
+    top: var(--posocion-top);
+    left: var(--posicion-tlr);
+}
+#rigth{
+    top: var(--posocion-top);
+    right: var(--posicion-tlr);
+}
+.box.descarte{
+    top: 30%;
+    left: 38%;
+    width: 24vh;
+    height: 36vh;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);
+}
+.box.pila{
+    top: 35%;
+    left: 52%;
+    width: 20vh;
+    height: 30vh;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);
+}
+.carta{
+    width: 12vh;
+    height: 18vh;
+    border-radius: var(--radio);
+    background-size: cover;
+    background-image: url(assets/images/carta_uno.jpg);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+}
+.box.horizontal .carta:not(:first-child) {
+    margin-left: var(--cartas-espacio-horizontal);
+}
+.box.vertical .carta:not(:first-child) {
+    margin-top: var(--cartas-espacio-vertical);
+}
+#descarte{
+    width: 22vh;
+    height: 34vh;
+    background-image: url(assets/images/Carta_uno_reverse.jpg);
+    box-shadow: none;
+}
+#pila{
+    width: 19vh;
+    height: 29vh;
+}
+#jleft{
+    rotate: 90deg;
+}
+#jrigth{
+    rotate: -90deg;
+}
+#jtop{
+    rotate: -180deg;
+}
+#jmain{
+    background-image: url(assets/images/Carta_uno_reverse.jpg);
+    cursor: grab;
+}
+#jmain:hover{
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    box-shadow: 0 0 18px 6px rgba(255, 255, 0, 0.6);
+}
+#pila:hover{
+    transform: translateY(-5px) scale(1.01);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+    cursor: pointer;
+}
+.jinfo{
+    position: fixed;
+    display: flex;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: white;
+    font-size: 2vh;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    z-index: 3;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+#avatar{
+    width: 5vh;
+    height: 5vh;
+    border-radius: 50%;
+    background-color: #3498DB;
+    background-size: cover;
+    background-position: center;
+    border: 2px solid #FFEB3B;
+    margin-right: 10px;
+}
+#name{
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    white-space: nowrap;
+}
+#jmain-info{
+    bottom: calc(4% + var(--ancho) + 27px);
+    left: calc(50% - (var(--largo) / 2) * 1.3 + 10px);
+    transform: none;
+    flex-direction: row;
+}
+#jleft-info{
+    top: var(--posocion-top);
+    left: calc(var(--posicion-tlr) + var(--ancho) + 8px);
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
+#jleft-info #avatar{ 
+    margin-bottom: 5px;
+    margin-right: 0;
+}
+#jtop-info{
+    top: calc(var(--posicion-tlr) + var(--ancho) + 8px);
+    left: calc(50% - (var(--largo) / 2) + 10px);
+    transform: none;
+    flex-direction: row;
+}
+#jright-info{
+    top: var(--posocion-top);
+    right: calc(var(--posicion-tlr) + var(--ancho) + 8px);
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
+#jright-info #avatar{
+    margin-bottom: 5px;
+    margin-right: 0;
+}
