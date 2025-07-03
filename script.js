@@ -37,21 +37,21 @@ const card = {
     value: 5,
 }*/
 
-const player = {
+/*const player = {
     id: 'player1',
     name: 'Jugador 1',
     cards: [],
     points: 0,
     saidUNO: false,
     isHuman: true, 
-}
+}*/
 
 //estado inicial del juego
 const game = {
     players,
     deck,
     discardPile,
-    turn: currentPlayerIndex,
+    //turn: currentPlayerIndex, no la usamos
     direction,
     currentColor: null,
     waitingForColor: false,
@@ -620,15 +620,27 @@ function checkUNO(playerIndex){
 
 
 function countPoints (winnerIndex) {
-    
+    players.forEach((player, index) => {
+        if (index !== winnerIndex) {
+            player.cards.forEach(card => {
+                if (card.value === 'wild' || card.value === 'wildDraw4') {
+                    player.points += 50;
+                } else if (card.value === 'draw2' || card.value === 'jump' || card.value === 'reverse') {
+                    player.points += 20;
+                } else{
+                    player.points += parseInt(card.value);
+                }
+            });   
+        }
+    });       
 }
 
 
 function resetRound() {
     const winnerIndex = players.findIndex(p => p.cards.length === 0);
-    //const pts = countPoints(winnerIndex);
-    //console.log(`${players[winnerIndex].name} ganó la ronda y suma ${pts} puntos`);
-    console.log(`${players[winnerIndex].name} ganó la ronda`);
+    countPoints(winnerIndex);
+    game.roundWinner = players[winnerIndex];
+    console.log(`${game.roundWinner} ganó la ronda y suma ${players[winnerIndex].points} puntos`);
     // reiniciar el juego
     currentPlayerIndex = 0;
     direction = 1;
