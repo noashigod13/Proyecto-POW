@@ -1,0 +1,415 @@
+/* Variables */
+:root {
+    --color-primary: #FF2D75;
+    --color-secondary: #FF9E3F;
+    --color-yellow: #FBBF24;
+
+    --color-dark: #1A1A2E;
+    --color-gray-900: #111827;
+    --color-gray-700: #374151;
+    --color-gray-500: #6B7280;
+    --color-gray-300: #D1D5DB;
+    --color-gray-400: #9CA3AF;
+}
+
+/* Reset y estilos base */
+body {
+    font-family: 'Rubik', sans-serif;
+    color: white;
+    min-height: 100vh;
+    margin: 0;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+}
+
+/* Tipografía */
+.pixel-font {
+    font-family: 'Press Start 2P', cursive;
+}
+
+p, li {
+       font-size: 25px;
+   }
+
+
+/* Contenedores */
+.profile-container{
+    width: 90%;
+    max-width: 600px;
+    background-color: rgba(50, 55, 71);
+    backdrop-filter: blur(12px);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    border: 1px solid var(--color-gray-707);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    margin: 1rem;
+}
+
+.rules-container {
+    width: 90%;
+    height: auto; /* Cambiar a auto para que se ajuste al contenido */
+    max-width: 1000px; /* Aumentar el ancho máximo */
+    background-color:rgba(50, 55, 71);
+    border-radius: 1.5rem; /* Aumentar el radio de borde */
+    padding: 2rem; /* Aumentar el padding */
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); /* Aumentar la sombra */
+    margin: 2rem auto; /* Centrar y aumentar el margen */
+}
+
+.rules-container .text-center{
+    position:sticky;
+    padding: 1rem; 
+    background-color:rgba(50, 55, 71);
+    top: 0;
+    left: 0;
+    right: 0;
+    max-width: 1000px;
+    margin:2rem auto;
+    z-index: 10;
+}
+
+.main-menu {
+    width: 90%;
+    max-width: 600px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-menu.visible, .rules-container.visible {
+    display: flex;
+}
+
+/* Encabezados y texto */
+.text-center {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.profile-image {
+    max-width: 180px; /* Puedes ajustar este valor para hacerla más pequeña o grande */
+    height: auto; /* Mantiene la proporción de la imagen */
+    display: block; /* Necesario para que 'margin: auto' funcione para centrar elementos de bloque */
+    margin: 0 auto 20px auto; /* Centra horizontalmente y añade un margen inferior */
+}
+
+.profile-image2 {
+    height: auto; /* Mantiene la proporción de la imagen */
+    display: block; /* Necesario para que 'margin: auto' funcione para centrar elementos de bloque */
+    margin: 0 auto 20px auto; /* Centra horizontalmente y añade un margen inferior */
+}
+
+.title-gradient {
+    background: linear-gradient(to right, var(--color-secondary), var(--color-primary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.2;
+}
+
+.subtitle {
+    color: var(--color-gray-900);
+    font-size: 1rem;
+    font-size: 25px;
+    
+}
+
+.section-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 0.5rem;
+}
+
+/* Sección de avatares */
+.avatars-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.avatar-option {
+    transition: all 0.2s ease;
+    filter: grayscale(30%);
+    border: 2px solid transparent;
+    border-radius: 9999px;
+    cursor: pointer;
+}
+
+.avatar-option:hover {
+    transform: scale(1.05);
+    filter: grayscale(0%);
+    border-color: var(--color-secondary);
+}
+
+.avatar-option.selected {
+    filter: grayscale(0%);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 10px var(--color-primary);
+    transform: scale(1.05);
+}
+
+.avatar-option img {
+    width: 100%;
+    border-radius: 9999px;
+    aspect-ratio: 1/1;
+}
+
+/* Input de nombre */
+.input-container {
+    position: relative;
+    width: 90%;
+    margin: 1.5rem auto;
+}
+
+.input-field {
+    width: 100%;
+    background-color: var(--color-gray-700);
+    border: 2px solid var(--color-gray-700);
+    border-radius: 0.5rem;
+    padding: 0.6rem 0.8rem;
+    color: white;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.input-field:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 45, 117, 0.3);
+    border-color: var(--color-primary);
+}
+
+.char-count {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.8rem;
+    color: var(--color-gray-500);
+    font-size: 0.75rem;
+}
+
+/* Botones */
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.confirm-button, .rules-button {
+    background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
+    color: white;
+    font-weight: bold;
+    padding: 0.8rem 2rem;
+    border-radius: 9999px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.confirm-button:hover:not(:disabled), .rules-button:hover {
+    filter: brightness(105%);
+}
+
+.confirm-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Menú principal */
+.menu-header {
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.menu-content {
+    flex: 1;
+    width: 100%;
+    display: grid;
+    place-items: center;
+    padding: 0 1rem;
+}
+
+.menu-options {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 600px;
+}
+
+.primary-button {
+    width: 100%;
+    background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
+    color: white;
+    font-weight: bold;
+    padding: 1.25rem;
+    border-radius: 0.5rem;
+    font-size: 1.15rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.primary-button:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 15px -5px rgba(0, 0, 0, 0.2);
+}
+
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.menu-item {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    background: rgba(26, 26, 46, 0.8);
+    border: 2px solid var(--color-gray-700);
+    font-weight: bold;
+    padding: 1rem 1.25rem;
+    border-radius: 0.5rem;
+    backdrop-filter: blur(12px);
+    cursor: pointer;
+    font-size: 1rem;
+    color: white
+}
+
+.menu-item:hover {
+    border-color: var(--color-primary);
+}
+
+.menu-item::before {
+    content: '';
+    position: absolute;
+    left: -100%;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: 0.5s;
+}
+
+.menu-item:hover::before {
+    left: 100%;
+}
+
+.secondary-options {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+}
+
+.secondary-button {
+    color: var(--color-gray-400);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: color 0.2s ease;
+}
+
+.secondary-button:hover {
+    color: white;
+}
+
+.menu-footer {
+    text-align: center;
+    padding: 1.5rem 0;
+    color: var(--color-gray-500);
+    font-size: 0.85rem;
+}
+
+/* Animaciones */
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+.floating {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Estilos para la vista de reglas */
+.rules-nav {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+}
+
+.rules-button {
+    background: none;
+    border: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    transition: all 0.2s ease;
+}
+
+.rules-button:hover {
+    color: var(--color-secondary);
+}
+
+.rules-section {
+    display: none;
+    padding: 1rem;
+    background: rgba(55, 65, 81, 0.5);
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+}
+
+.rules-section.visible {
+    display: block;
+}
+
+/* Vista de juego */
+.game-view {
+    width: 90%;
+    max-width: 600px;
+    background-color: rgba(17, 24, 39, 0.8);
+    backdrop-filter: blur(12px);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    border: 1px solid var(--color-gray-700);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    margin: 1rem;
+    text-align: center;
+    display: none;
+}
+
+.game-view.visible {
+    display: block;
+}
+
+.game-view h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+

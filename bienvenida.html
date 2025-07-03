@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale="1.0">
+    <title>UNO web</title>
+    <link rel="icon" href="icon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rubik:wght@400;700;900&display=swap" rel="stylesheet"> <!-- Esto lo que hace es importar la funte pixeleada de una API de google -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Pantalla de creación de perfil -->
+    <div id="profile-setup" class="profile-container">
+       <img src="https://i.ibb.co/20PDdW7C/Dise-o-sin-t-tulo-19-Photoroom.png" alt="Imagen de perfil" class="profile-image">
+        <div class="text-center">
+            <h1 class="pixel-font title-gradient">CREA TU PERFIL</h1>
+            <p class="subtitle">Personaliza tu identidad en el juego</p>
+        </div>
+        
+        <div class="avatar-section">
+            <h2 class="section-title">
+                <svg class="icon" viewBox="0 0 24 24" stroke="currentColor" fill="none">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+                ELIGE TU AVATAR
+            </h2>
+            
+            <div id="avatars-container" class="avatars-grid"></div>
+        </div>
+        
+        <div class="name-section">
+            <h2 class="section-title">
+                <svg class="icon" viewBox="0 0 24 24" stroke="currentColor" fill="none">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+                NOMBRE DE JUGADOR
+            </h2>
+            
+            <div class="input-container">
+                <input type="text" id="playerName" maxlength="12" placeholder="Escribe tu nombre (máx. 12 caracteres)" class="input-field">
+                <div class="char-count" id="charCount">0/12</div>
+            </div>
+        </div>
+        
+        <div class="button-container">
+            <button id="confirmBtn" class="confirm-button" disabled>CONFIRMAR PERFIL</button>
+        </div>
+    </div>
+   
+    <!-- Menú principal -->
+    <div id="main-menu" class="main-menu">
+        <header class="menu-header">
+            <div class="floating">
+                 <img src="https://i.ibb.co/20PDdW7C/Dise-o-sin-t-tulo-19-Photoroom.png" alt="Imagen de perfil" class="profile-image2">
+                <p class="subtitle" id="welcome-message">¡Elige tu nuevo juego!</p>
+            </div>
+        </header>
+        
+        <main class="menu-content">
+            <div class="menu-options">
+                <button id="playNowBtn" class="primary-button">▶ JUGAR AHORA</button>
+                <div class="options-grid">
+                    <button id="rulesBtn" class="menu-item">🏆 HOUSE RULES</button>
+                    <button id="powerUpsBtn" class="menu-item">🎇 POWER UPS</button>
+                </div>
+                
+                <div class="secondary-options">
+                   <!-- <button class="secondary-button">ℹ️ Créditos</button>-->
+                    <!-- <button class="secondary-button">🌎 Configuración</button>-->
+                </div>
+            </div>
+        </main>
+        
+        <footer class="menu-footer">
+            © 2025 UNO Web Honhabestra Studios | v1.0
+        </footer>
+    </div>
+
+    <!-- Vista de juego -->
+    <div id="game-view" class="game-view">
+        <h1 class="pixel-font">NO SE LOL</h1> <!-- Aqui es donde se deberia iniciar la logica del juego -->
+        <button id="backToMenuBtn" class="confirm-button">Volver al Menú</button>
+    </div>
+
+    <!-- Vista de reglas -->
+    <div id="rules-view" class="rules-container">
+        <div class="text-center">
+            <h1 class="pixel-font title-gradient">REGLAS DEL JUEGO</h1>
+            <div class="rules-nav">
+                <button class="rules-button" data-target="unoProgresivo">UNO Progresivo</button>
+                <button class="rules-button" data-target="unoSieteCero">UNO Siete-Cero</button>
+                <button class="rules-button" data-target="unoJumpIn">UNO® Jump-In</button>
+            </div>
+        </div>
+
+        <div id="unoProgresivo" class="rules-section visible">
+            <h2>📊 UNO Progresivo</h2>
+            <p> Las reglas son las mismas que en el juego clásico de UNO, con las siguientes modificaciones:</p>
+            <ol>
+                <li>Cuando un jugador juega una carta Roba Dos (+2), el siguiente jugador puede jugar otra carta Roba Dos (+2), obligando al siguiente en la secuencia a robar 4 cartas.</li> 
+                <br>
+                <li>La misma regla aplica para los Comodines +4: </li>
+                    <ul>
+                        <li>    Si un jugador juega un Comodín +4, el siguiente jugador puede jugar otro Comodín +4, haciendo que el siguiente en la secuencia tenga que robar 8 cartas.</li>
+                        <li>    El último jugador en jugar un Comodín +4 elige el color con el que continuará el juego.</li>
+                    </ul>
+                <br>
+                <li>Los jugadores pueden seguir jugando cartas consecutivas de Roba Doso Comodín +4 siempre que las tengan en su mano.</li>
+                    <ul>
+                        <li>    Por ejemplo, si 4 jugadores seguidos juegan cartas Roba Dos, el siguiente jugador (que no tenga una) deberá robar 8 cartas.</li>
+                    </ul>
+                <br>
+                <li>Un jugador solo puede jugar una carta Roba Dos o Comodín +4 por turno, incluso si tiene varias en su mano.</li></ol>
+        </div>
+        <div id="unoSieteCero" class="rules-section">
+            <h2>UNO Siete Cero</h2>
+            <p>Las reglas son las mismas que en el juego clásico de UNO, con las siguientes modificaciones:</p>
+            <ul>
+                <li>Cuando se juega un "<strong>0</strong>", todos los jugadores deben pasar su mano de cartas al jugador siguiente en la dirección del juego.</li>
+                <li>Cuando se juega un "<strong>7</strong>", el jugador que jugó la carta debe intercambiar su mano con otro jugador de su elección.</li>
+            </ul>
+        </div>
+        <div id="unoJumpIn" class="rules-section">
+            <h2>Regla Principal: Jump-In</h2>
+            <ul>
+                <li>Si tienes <strong>exactamente la misma carta</strong> (mismo color y número) que la carta superior del mazo de descartes, puedes jugarla <strong>inmediatamente</strong>, sin importar de quién sea el turno.</li>
+                <li><strong>Ejemplo:</strong> Si hay un "6 Azul" en los descartes y tienes un "6 Azul" en mano, puedes jugarlo al instante.</li>
+                <li>Después de un "Jump-In", el turno continúa desde el jugador que acaba de jugar la carta.</li>
+            </ul>
+
+            <h2>Reglas Adicionales</h2>
+            <ul>
+                <li>Si tienes dos cartas iguales en tu mano, puedes jugarlas una tras otra, pero debes colocarlas <strong>una por una</strong> en la pila de descartes.</li>
+                <li>Esto permite que otro jugador pueda "intervenir" ("jump-in") e impedirte jugar la segunda carta.</li>
+                <li>Si haces un "jump-in" con una carta especial (Salto, Reversa, Roba Dos o Comodín +4), el efecto de la <strong>segunda carta cancela el efecto de la primera</strong>.</li>
+                <li><strong>Ejemplo:</strong> Si un jugador juega un "Salto" y otro hace un "jump-in" con otro "Salto", la segunda carta anula la primera y el juego continúa normalmente.</li>
+            </ul>
+        </div>
+
+        <button id="backToRulesBtn" class="confirm-button">Volver al Menú</button>
+    </div>
+
+    <!-- Vista de Power Ups -->
+    <div id="powerUps-view" class="rules-container" style="display: none;">
+
+    <div class="text-center">
+        <h1 class="pixel-font title-gradient">PODERES ESPECIALES</h1>
+        <h2>🎴Cartas Especiales</h2>
+    </div>
+        <ol>
+            <li><strong>Carta Bomba</strong>
+                <ul>
+                    <li>Se coloca en la zona de descarte y explota después de 3 turnos.</li>
+                    <li>El jugador en turno cuando explota debe robar 3 cartas.</li>
+                    <li>Costo: -10 puntos.</li>
+                </ul>
+            </li>
+            <img src="https://i.ibb.co/1tMvCVXs/Gemini-Generated-Image-99ix3s99ix3s99ix-Photoroom.png" alt="Imagen de perfil" class="profile-image">
+            <li><strong>Escudo</strong>
+                <ul>
+                    <li>Protege de cualquier penalización (+2, +4, bomba, etc.) por un turno.</li>
+                    <li>Costo: -15 puntos.</li>
+                </ul>
+            </li>
+            <img src="https://i.ibb.co/RkmyKCJZ/6290a649-6ef3-4156-9229-4cc26656b64d-Photoroom.png" alt="Imagen de perfil" class="profile-image">
+            <li><strong>Robo Forzado</strong>
+                <ul>
+                    <li>Fuerza a un oponente a intercambiar su mano contigo.</li>
+                    <li>Costo: -20 puntos.</li>
+                </ul>
+            </li>
+            <img src="https://i.ibb.co/qY0kGNCk/Gemini-Generated-Image-8yurnb8yurnb8yur-Photoroom.png" alt="Imagen de perfil" class="profile-image">
+            <li><strong>Carta Camaleón</strong>
+                <ul>
+                    <li>Se puede jugar en cualquier momento y copia la última carta jugada.</li>
+                    <li>Costo: -15 puntos.</li>
+                </ul>
+            </li>
+            <img src="https://i.ibb.co/dsKRZW0p/Gemini-Generated-Image-9fijjr9fijjr9fij-Photoroom.png" alt="Imagen de perfil" class="profile-image">
+            <li><strong>Rebote</strong>
+                <ul>
+                    <li>Si te tiran un +2 o +4, puedes rebotarlo a otro jugador en vez de recibirlo.</li>
+                    <li>Costo: -10 puntos.</li>
+                </ul>
+            </li>
+            <img src="https://i.ibb.co/8gzmhJL1/Gemini-Generated-Image-xmzs33xmzs33xmzs-1.png" alt="Imagen de perfil" class="profile-image">
+        </ol>
+    <button id="backToMenuFromPowerUps" class="confirm-button">Volver al Menú</button>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
