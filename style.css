@@ -229,7 +229,6 @@ body{
     background-image: url(assets/images/carta_uno.jpg);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
-    flex-shrink: 0;
 }
 
 .box.horizontal .carta:not(:first-child) {
@@ -238,6 +237,10 @@ body{
 
 .box.vertical .carta:not(:first-child) {
     margin-left: var(--cartas-espacio-vertical);
+}
+
+.box.vertical .carta {
+    flex-shrink: 0;
 }
 
 .carta-img {
