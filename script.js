@@ -29,6 +29,7 @@ let players = [];
 let currentPlayerIndex = 0;
 let direction = 1;
 
+
 /*//Carta (No lo usamos, pero lo dejamos por si acaso)
 const card = {
     id: 'R-5',
@@ -46,6 +47,10 @@ const card = {
     isHuman: true, 
 }*/
 
+//Botones
+const drawBtn = document.getElementById('descarte');
+const unoBtn = document.getElementById('uno');
+
 //estado inicial del juego
 const game = {
     players,
@@ -61,7 +66,7 @@ const game = {
 document.addEventListener('DOMContentLoaded', function() {
     const welcomePage = document.getElementById('profile-setup');
     const gamePage = document.getElementById('game-grid-container');
-    if(welcomePage){
+    if (welcomePage) {
         // Mostrar solo la pantalla de perfil al inicio
         document.getElementById('profile-setup').style.display = 'block';
         document.getElementById('main-menu').style.display = 'none';
@@ -311,13 +316,23 @@ function startGame(numPlayers) {
     initializeDeck();
     dealCards(numPlayers);
 
+    //Ignorar. Es para verificar que las cartas se reparten correctamente
+    players.forEach(p => {
+        //console.log(`${p.name} tiene:`, p.cards);
+        console.log(`${p.name} tiene:`, p.cards.map(c => `${c.color}-${c.value}-${c.id}`));
+    });
+
     //activar click del mazo
-    const drawBtn = document.getElementById('descarte');
     if (drawBtn) {
-        drawBtn.addEventListener('click', () => drawCard(currentPlayerIndex));
+        drawBtn.addEventListener('click', () => {
+            if (currentPlayerIndex === 0) {
+                drawCard(0);
+            } else {
+                console.log("No es tu turno.");
+            }
+        });    
     }
     //activar click del boton de uno
-    const unoBtn = document.getElementById('uno');
     if (unoBtn) {
         unoBtn.addEventListener('click', unoButtonClick);
         //se pasa unoButtonClick sin parentesis para que no se ejecute inmediatamente
@@ -346,12 +361,12 @@ function initializeDeck() {
             deck.push({ color, value: special, id: `${color}-${special}-2` });
         });
     });
-    /*//comodines
+    //Comodines. 4 de cada uno
     wildCards.forEach(special => {
-        for (let i = 1; i <= 4; i++) {
-            deck.push({color: 'wild',value: special,id: `wild-${special}-${i}`}); 
+        for (let i = 1; i <=4; i++) {
+            deck.push({color: 'wild',value: special, id: `wild-${special}-${i}`}); 
         }
-    });*/
+    });
 
     //Algoritmo de mezcla (Fisher-Yates), lo busque por internet jeje
     for (let i = deck.length - 1; i > 0; i--) {
@@ -409,6 +424,7 @@ function renderCardsHuman(){
     //Repartir visualmente las cartas de cada jugador
     const container = document.getElementById('player-cards');
     container.innerHTML = ''; 
+
     players[0].cards.forEach(card => {
         const playerCard = document.createElement('div');
         playerCard.classList.add('carta-img');
@@ -428,7 +444,7 @@ function renderCardsCpu(playerIndex) {
             cpuCard.classList.add('carta');
             container.appendChild(cpuCard);
         });
-    }else if (playerIndex === 2) {
+    } else if (playerIndex === 2) {
         const container = document.getElementById('jtop');
         container.innerHTML = ''; 
         players[playerIndex].cards.forEach(card => {
@@ -445,12 +461,6 @@ function renderCardsCpu(playerIndex) {
             container.appendChild(cpuCard);
         });
     }
-
-    //Ignorar. Es para verificar que las cartas se reparten correctamente
-    players.forEach(p => {
-        console.log(`${p.name} tiene:`, p.cards);
-        console.log(`${p.name} tiene:`, p.cards.map(c => `${c.color}-${c.value}`));
-    });
 }
 
 function activeClickCard(){
@@ -461,28 +471,53 @@ function activeClickCard(){
         img.addEventListener('click', () => {
             const id = img.id;
             const carta = players[0].cards.find(c => c.id === id);
-            if (carta) {
+            if (carta && currentPlayerIndex === 0) {
                 playCard(0, carta);
             }
         });
     });
 }
 
-
 function playCard(playerIndex, card) {
 
-    console.log(card);
     const jugador = players[playerIndex];
     const tope = discardPile[discardPile.length - 1];
 
-    const esValida = (card.color === tope.color || card.value === tope.value  || card.color === 'wild' || card.color === 'wildDraw4') 
+    const esValida = (card.color === tope.color || 
+        card.value === tope.value  || 
+        card.color === 'wild' ||
+        (tope.color === 'wild' && card.color === game.currentColor)
+    );
     if (!esValida) {
         console.log("Carta inválida.");
         return;
     }
+
     //Elimina la carta de la mano del jugador y la agrega al descarte
     jugador.cards = jugador.cards.filter(c => c.id !== card.id);
     discardPile.push(card);
+
+    //Por default el CPU siempre dice uno
+    if (!players[currentPlayerIndex].isHuman && players[currentPlayerIndex].cards.length === 1) {
+        players[currentPlayerIndex].saidUNO = true;
+    }
+    
+    // Actualizar el color actual del juego
+    if (card.color !== 'wild') {
+        game.currentColor = card.color;
+    } else if(currentPlayerIndex === 0) {
+        //Esto debería ser una ventana emergente con estilo
+        const colorInput = prompt("Ingresa el color (red, green, blue, yellow):");
+        if (colors.includes(colorInput)) {
+            game.currentColor = colorInput; 
+            console.log(`Color elegido: ${game.currentColor}`); 
+        } else {
+            console.log("Color inválido, se elige un color aleatorio.");
+            game.currentColor = getRandomColor();
+        }
+    }    
+
+    console.log("El " + jugador.name + " juega la carta: " + card.color + "-" + card.value );
     
     let offset = 1;
     switch (card.value) {
@@ -497,13 +532,17 @@ function playCard(playerIndex, card) {
             direction *= -1;
             offset = 1;
         break;
+        case 'wildDraw4':
+            drawCard2(getNextPlayerIndex(1), 4);
+            offset = 2;
+        break;
     }
 
     renderDiscardPile(card);
     checkUNO(playerIndex);
     if (playerIndex === 0) {
         renderCardsHuman();
-    }else{
+    } else {
         renderCardsCpu(playerIndex);
     }
     setTimeout(() => nextTurn(offset), 800);
@@ -514,11 +553,11 @@ function getNextPlayerIndex(offset) {
     return (currentPlayerIndex + direction * offset + total) % total;
 }
 
-
 function unoButtonClick() {
     const jugador= players[currentPlayerIndex];
     if (jugador.cards.length === 2) {
         jugador.saidUNO = true;
+        unoBtn.classList.remove('disabled');
         console.log(`${jugador.name} gritó ¡UNO!`);
     } else {
         console.log(`${jugador.name} no puede gritar UNO ahora`);
@@ -526,19 +565,27 @@ function unoButtonClick() {
 }
 
 function drawCard(playerIndex){
-    if (currentPlayerIndex !== playerIndex) {
-        console.log("No es tu turno.");
-        return;
-    }
-    const carta = deck.pop();
-    if (carta){
+
+    let carta = deck.pop();
+    if (carta) {
+        console.log(`${players[playerIndex].name} roba una carta: ${carta.color}-${carta.value}`);
         players[playerIndex].cards.push(carta);
-    }    
+    }else {
+        console.log("No hay cartas en el mazo para robar, vamos a barajear.");
+        initializeDeck();
+        carta = deck.pop();
+    }
     
+    //Ignorar. Es para verificar que las cartas se reparten correctamente
+    players.forEach(p => {
+        //console.log(`${p.name} tiene:`, p.cards);
+        console.log(`${p.name} tiene:`, p.cards.map(c => `${c.color}-${c.value}-${c.id}`));
+    });
+
     if (playerIndex === 0) {
         renderCardsHuman();
         setTimeout(() => nextTurn(1), 800);
-    }else{
+    } else {
         renderCardsCpu(playerIndex);
         setTimeout(() => nextTurn(1), 800);
     }
@@ -546,17 +593,24 @@ function drawCard(playerIndex){
 
 
 function drawCard2(playerIndex,cant){
-    for (let i = 0; i < cant; i++) {
-        const carta = deck.pop();
-        if (carta){
+    let cont=0;
+    while (cont < cant) {
+        let carta = deck.pop();
+        if (carta) {
             players[playerIndex].cards.push(carta);
-        }  
+            cont++;
+        } else initializeDeck();
     }
-    if (playerIndex === 0) {
-        renderCardsHuman();
-    }else{
-        renderCardsCpu(playerIndex);
-    }
+    console.log(`${players[playerIndex].name} roba ${cant} cartas.`);
+
+    //Ignorar. Es para verificar que las cartas se reparten correctamente
+    players.forEach(p => {
+        //console.log(`${p.name} tiene:`, p.cards);
+        console.log(`${p.name} tiene:`, p.cards.map(c => `${c.color}-${c.value}-${c.id}`));
+    });
+
+    if (playerIndex === 0) renderCardsHuman();
+    else renderCardsCpu(playerIndex);
 }
 
 
@@ -569,28 +623,35 @@ function nextTurn(offset) {
     
     if (!players[currentPlayerIndex].isHuman) {
         setTimeout(cpuPlay, 800);
-    }    
+        unoBtn.classList.remove('disabled');
+    } else {
+        if (players[currentPlayerIndex].cards.length === 2) {
+            unoBtn.classList.add('disabled');
+        }
+    }
 }
 
 function cpuPlay() {
-    const index = currentPlayerIndex;
-    const cartas = players[currentPlayerIndex].cards;
     const tope = discardPile[discardPile.length - 1];
-    const cartaJugable = cartas.find(c =>
-        c.color === tope.color ||
-        c.value === tope.value ||
-        c.color === 'wild' ||
-        c.color === 'wildDraw4'
+    const cartaJugable = players[currentPlayerIndex].cards.find(card =>
+        card.color === tope.color || 
+        card.value === tope.value  || 
+        card.color === 'wild' ||
+        (tope.color === 'wild' && card.color === game.currentColor)
     );
+
     if (cartaJugable) {
+
         if (cartaJugable.value === 'wild' || cartaJugable.value === 'wildDraw4') {
             game.currentColor = getRandomColor();
             console.log(`CPU elige color: ${game.currentColor}`);
         }
-        playCard(index, cartaJugable);
+
+        playCard(currentPlayerIndex, cartaJugable);
+
     } else {
-        console.log(`${players[index].name} no tiene cartas jugables, roba una carta.`);
-        drawCard(index);
+        console.log(`${players[currentPlayerIndex].name} no tiene cartas jugables, roba una carta.`);
+        drawCard(currentPlayerIndex);
     }
 }
 
@@ -604,18 +665,14 @@ function checkUNO(playerIndex){
     // si quedó en 1 carta y NO gritó UNO:
     if (jugador.cards.length === 1 && !jugador.saidUNO) {
         console.log(`${jugador.name} olvidó gritar UNO y roba 2 cartas`);
-    
         drawCard2(playerIndex,2);
-        if (jugador.isHuman){
-            renderCardsHuman();
-        }else{
-            renderCardsCpu(playerIndex);
-        }  
-    }
+        if (jugador.isHuman) renderCardsHuman();
+        else renderCardsCpu(playerIndex);
+    
+    } else unoBtn.classList.remove('disabled');
+    
     // si se quedó sin cartas, se termina la ronda 
-    if (jugador.cards.length === 0) {
-        resetRound();
-    }
+    if (jugador.cards.length === 0) resetRound();
 }  
 
 
@@ -624,11 +681,11 @@ function countPoints (winnerIndex) {
         if (index !== winnerIndex) {
             player.cards.forEach(card => {
                 if (card.value === 'wild' || card.value === 'wildDraw4') {
-                    player.points += 50;
+                    players[winnerIndex].points += 50;
                 } else if (card.value === 'draw2' || card.value === 'jump' || card.value === 'reverse') {
-                    player.points += 20;
-                } else{
-                    player.points += parseInt(card.value);
+                     players[winnerIndex].points += 20;
+                } else {
+                     players[winnerIndex].points += parseInt(card.value);
                 }
             });   
         }
@@ -639,8 +696,9 @@ function countPoints (winnerIndex) {
 function resetRound() {
     const winnerIndex = players.findIndex(p => p.cards.length === 0);
     countPoints(winnerIndex);
-    game.roundWinner = players[winnerIndex];
-    console.log(`${game.roundWinner} ganó la ronda y suma ${players[winnerIndex].points} puntos`);
+    //game.roundWinner = players[winnerIndex];
+    //aqui deberia de salir una ventana modal con la cantidad de puntos por jugador y la opción de querer seguir jugando o no
+    console.log(`${players[winnerIndex].name} ganó la ronda y suma ${players[winnerIndex].points} puntos`);
     // reiniciar el juego
     currentPlayerIndex = 0;
     direction = 1;
