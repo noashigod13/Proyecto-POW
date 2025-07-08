@@ -684,8 +684,10 @@ function checkUNO(playerIndex){
         if (jugador.isHuman) renderCardsHuman();
         else renderCardsCpu(playerIndex);
     
-    } else unoBtn.classList.remove('disabled');
-    
+    } else {
+        unoBtn.classList.remove('disabled');
+        jugador.saidUNO = false; 
+    }
     // si se quedó sin cartas, se termina la ronda 
     if (jugador.cards.length === 0) resetRound();
 }  
@@ -698,15 +700,14 @@ function countPoints (winnerIndex) {
                 if (card.value === 'wild' || card.value === 'wildDraw4') {
                     players[winnerIndex].points += 50;
                 } else if (card.value === 'draw2' || card.value === 'jump' || card.value === 'reverse') {
-                     players[winnerIndex].points += 20;
+                    players[winnerIndex].points += 20;
                 } else {
-                     players[winnerIndex].points += parseInt(card.value);
+                    players[winnerIndex].points += parseInt(card.value);
                 }
             });   
         }
     });       
 }
-
 
 function resetRound() {
     const winnerIndex = players.findIndex(p => p.cards.length === 0);
