@@ -76,23 +76,35 @@ body{
     right: 16%;
     width: 20vh;
     height: 20vh;
-    background-color: #C62828;
-    border-radius: 100%;
-    border: 5px solid #8B0000;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: bold;
-    color: #FFEB3B;
-    font-size: 7vh;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    -webkit-text-stroke: 3px black;
-    opacity: 0.5;
+
+    /*color*/
+    background-color: #C62828;
+    border-radius: 100%;
+    /*border: 5px solid #8B0000;*/
+    border: 5px solid  rgba(255, 255, 255, 0.2);
+    
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4),
                 inset 0 -3px 5px rgba(0, 0, 0, 0.3),
                 inset 0 3px 5px rgba(255, 255, 255, 0.2);
     transition: all 0.2s ease-out;
     z-index: 10;
+
+   /* texto
+    font-weight: bold;
+    color: #FFEB3B;
+    font-size: 7vh;
+    -webkit-text-stroke: 2.5px black; 
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.75); 
+    opacity: 0.5;*/
+
+    background-image: url('assets/images/uno-logo.png'); 
+    background-size: 70%; 
+    background-position: center;
+    background-repeat: no-repeat;
+
 }
 /*Se supone así se debe ver cuando está activo*/
 .uno.disabled{
@@ -226,7 +238,7 @@ body{
     height: 18vh;
     border-radius: var(--radio);
     background-size: cover;
-    background-image: url(assets/images/carta_uno.jpg);
+    background-image: url(assets/images/carta-uno.png);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
 }
@@ -271,7 +283,7 @@ body{
 #descarte{
     width: 22vh;
     height: 34vh;
-    background-image: url(assets/images/carta_uno.jpg);
+    background-image: url(assets/images/carta-uno.png);
     box-shadow: none;
 }
 

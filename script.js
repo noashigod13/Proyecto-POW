@@ -425,6 +425,9 @@ function renderCardsHuman(){
     const container = document.getElementById('player-cards');
     container.innerHTML = ''; 
 
+    //cartas ordenadas por color
+    sortCardByColor(players[0].cards);
+
     players[0].cards.forEach(card => {
         const playerCard = document.createElement('div');
         playerCard.classList.add('carta-img');
@@ -461,6 +464,18 @@ function renderCardsCpu(playerIndex) {
             container.appendChild(cpuCard);
         });
     }
+}
+
+function sortCardByColor(){
+    //cartas ordenadas por color
+    const order = ['wild', 'red', 'yellow', 'green', 'blue'];
+    const valueOrder = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'draw2', 'jump', 'reverse', 'wild', 'wildDraw4'];
+    players[0].cards.sort((a, b) => {  
+        const sort = order.indexOf(a.color) - order.indexOf(b.color);
+        if (sort !== 0) return sort;
+        return valueOrder.indexOf(a.value) - valueOrder.indexOf(b.value);
+    });
+    //players[0].cards.sort((a, b) => order.indexOf(a.color) - order.indexOf(b.color));
 }
 
 function activeClickCard(){
