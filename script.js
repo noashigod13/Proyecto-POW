@@ -374,14 +374,6 @@ function initializeDeck() {
         [deck[i], deck[j]] = [deck[j], deck[i]];
     }
 
-    deck.forEach(card => {
-        discardPile.forEach(dcard => {
-            if (dcard.id === card.id) {
-                deck.splice(deck.indexOf(card), 1);
-            }
-        })
-    })
-
     //Ignorar. Es para verificar que las cartas se mezclan correctamente
     console.log(deck);
 }
@@ -590,8 +582,8 @@ function unoButtonClick() {
 function drawCard(playerIndex){
     //se verifica que el jugador pueda robar una carta, solo se usa para el humano
     //porque el CPU siempre roba una carta si no tiene jugables
+    let tope = discardPile[discardPile.length - 1];
     if (currentPlayerIndex === 0) {
-        const tope = discardPile[discardPile.length - 1];
         const cartaJugable = players[currentPlayerIndex].cards.find(card =>
             card.color === tope.color || 
             card.value === tope.value  || 
@@ -609,9 +601,9 @@ function drawCard(playerIndex){
         console.log(`${players[playerIndex].name} roba una carta: ${carta.color}-${carta.value}`);
         players[playerIndex].cards.push(carta);
     }else {
-        console.log("No hay cartas en el mazo para robar, vamos a barajear.");
-        initializeDeck();
+        reshufleDeck();
         carta = deck.pop();
+        console.log(`${players[playerIndex].name} roba una carta: ${carta.color}-${carta.value}`);
         players[playerIndex].cards.push(carta);
     }
     
@@ -637,7 +629,7 @@ function drawCard2(playerIndex,cant){
         if (carta) {
             players[playerIndex].cards.push(carta);
             cont++;
-        } else initializeDeck();
+        } else reshufleDeck();
     }
     console.log(`${players[playerIndex].name} roba ${cant} cartas.`);
 
@@ -668,6 +660,20 @@ function nextTurn(offset) {
         }
     }
 }
+
+function reshufleDeck() {
+    console.log("No hay cartas en el mazo para robar, vamos a barajear.");
+    const tope = discardPile.pop(); 
+    deck.push(...discardPile);   
+    discardPile = [];      
+    discardPile.push(tope);           
+
+    for (let i = deck.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [deck[i], deck[j]] = [deck[j], deck[i]];
+    }
+}
+
 
 function cpuPlay() {
     const tope = discardPile[discardPile.length - 1];
