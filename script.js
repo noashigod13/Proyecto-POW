@@ -580,6 +580,21 @@ function unoButtonClick() {
 }
 
 function drawCard(playerIndex){
+    //se verifica que el jugador pueda robar una carta, solo se usa para el humano
+    //porque el CPU siempre roba una carta si no tiene jugables
+    if (currentPlayerIndex === 0) {
+        const tope = discardPile[discardPile.length - 1];
+        const cartaJugable = players[currentPlayerIndex].cards.find(card =>
+            card.color === tope.color || 
+            card.value === tope.value  || 
+            card.color === 'wild' ||
+            (tope.color === 'wild' && card.color === game.currentColor)
+        );
+        if (cartaJugable) {
+            console.log("No puedes robar una carta, tienes cartas jugables.");
+            return;
+        }
+    }
 
     let carta = deck.pop();
     if (carta) {
@@ -589,6 +604,7 @@ function drawCard(playerIndex){
         console.log("No hay cartas en el mazo para robar, vamos a barajear.");
         initializeDeck();
         carta = deck.pop();
+        players[playerIndex].cards.push(carta);
     }
     
     //Ignorar. Es para verificar que las cartas se reparten correctamente
