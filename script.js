@@ -374,6 +374,14 @@ function initializeDeck() {
         [deck[i], deck[j]] = [deck[j], deck[i]];
     }
 
+    deck.forEach(card => {
+        discardPile.forEach(dcard => {
+            if (dcard.id === card.id) {
+                deck.splice(deck.indexOf(card), 1);
+            }
+        })
+    })
+
     //Ignorar. Es para verificar que las cartas se mezclan correctamente
     console.log(deck);
 }
@@ -609,7 +617,6 @@ function drawCard(playerIndex){
     
     //Ignorar. Es para verificar que las cartas se reparten correctamente
     players.forEach(p => {
-        //console.log(`${p.name} tiene:`, p.cards);
         console.log(`${p.name} tiene:`, p.cards.map(c => `${c.color}-${c.value}-${c.id}`));
     });
 
