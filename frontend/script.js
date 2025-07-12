@@ -289,6 +289,62 @@ function setupRulesNavigation() {
 }
 
 //Funciones de configuración de la página del juego
+
+// Arreglo con los efcetos de sonido
+const soundEffects = {
+   draw2Sound: new Audio('./assets/sounds/draw2-sound.mp3'),
+   draw4Sound: new Audio('./assets/sounds/draw4-sound.mp3'),
+   shuffle: new Audio('./assets/sounds/shuffling-cards-1.mp3'),
+   skipSound: new Audio('./assets/sounds/skip-sound.mp3'),
+   unoCall: new Audio('./assets/sounds/uno-sound-1.mp3'),
+   wildSound: new Audio('./assets/sounds/wild-sound.mp3')
+};
+
+//Como este es un sonido de fondo que siempre está presente se colocó como una constante aparte
+const gameMusic = new Audio('./assets/sounds/game-bg-music.mp3');
+gameMusic.loop = true;
+gameMusic.volume = 0.5;
+let isMusicEnabled = true;
+
+// Función para reproducir sonidos
+function playSound(sound) {
+   try {
+       soundEffects[sound].currentTime = 0; // Reinicia el sonido si ya está reproduciéndose
+       soundEffects[sound].play();
+   } catch (e) {
+       console.error("Error al reproducir sonido:", e);
+   }
+};
+
+//La música inicia automático
+function startBackgroundMusic() {
+   const playPromise = gameMusic.play();
+   if (playPromise !== undefined) {
+       playPromise.catch(error => {
+           console.log("Reproducción automática prevenida:", error);
+       });
+   }
+}
+// Control de música, si está encendida o pagada
+const musicToggle = document.getElementById('musicToggle');
+function musicSound(){
+   startBackgroundMusic();
+   if (musicToggle) {
+       musicToggle.addEventListener('click', function() {
+           isMusicEnabled = !isMusicEnabled;
+          
+           if (isMusicEnabled) {
+               gameMusic.volume = 0.5;
+               startBackgroundMusic();
+               this.classList.remove('muted');
+           } else {
+               gameMusic.pause();
+               this.classList.add('muted');
+           }
+       });
+   }
+}
+
 //Funcion para las notificaciones
 function getCardName(card) {
     const cardNames = {
@@ -505,35 +561,25 @@ function setupWebSocket(gameId){
                 console.log(`${msg.player} jugó ${msg.card.color}-${msg.card.value}`);
                 
                 // Revisar si el humano se quedo sin cartas
-                updateUI(msg.gameState);
-                if (players[0].length === 0){
-                    game.roundWinner = players[0];
-                    resetRound();
-                } 
+                updateUI(msg.gameState,msg);
                 break;
             case 'bot_play':
                 addNotification(`${msg.player} jugó ${msg.card.color}-${msg.card.value}`, 'card-played');
                 console.log(`${msg.player} jugó ${msg.card.color}-${msg.card.value}`);
-                updateUI(msg.gameState);
-                /* //Revisar si el cpu se quedo sin cartas
-                for (let i = 1; i < (msg.gameState.otherPlayers.length + 1); i++) {
-                    if (msg.gameState.otherPlayers[i - 1].count === 0){
-                        game.roundWinner = players[i];
-                        resetRound();
-                    }
-                }*/
+                updateUI(msg.gameState,msg);
                 break;
             case 'client_draw_from_deck':
+                showPlayerStatus(0, '+1');
                 addNotification(`${msg.player} roba una carta`, 'cards-drawn');
-                showPlayerStatus(msg.gameState.turn, '+1');
                 console.log(`${msg.player} robó una carta del mazo`);
-                updateUI(msg.gameState);
+                updateUI(msg.gameState,msg);
                 break;
             case 'bot_draw_from_deck':
+                if (msg.gameState.turn-1 === -1) showPlayerStatus(3, '+1');
+                else showPlayerStatus((msg.gameState.turn-1), '+1');
                 addNotification(`${msg.player} roba una carta`, 'cards-drawn');
-                showPlayerStatus(msg.gameState.turn, '+1');
                 console.log(`${msg.player} robó una carta del mazo`);
-                updateUI(msg.gameState);
+                updateUI(msg.gameState,msg);
                 break;
             case 'draw_penalty':
                 //showPlayerStatus(getNextPlayerIndex(1), '+4');
@@ -546,10 +592,11 @@ function setupWebSocket(gameId){
                 showPlayerStatus(msg.gameState.turn, '+2');
                 addNotification(`${msg.player} olvidó gritar UNO y roba 2 cartas`, 'cards-drawn');
                 console.log("Jugador recibe una penalización por no decir UNO a tiempo");
+                updateUnoButton(msg.gameState,msg);
                 break;
             case 'uno_warning':
                 console.log("Te queda una sola carta, di UNO a tiempo");
-                updateUnoButton(msg.gameState);
+                updateUnoButton(msg.gameState,msg);
                 break;
             case 'client_uno':
                 console.log(`${msg.player} dijo UNO`);
@@ -602,8 +649,9 @@ async function startGame() {
             });
         }
 
-        //Se limpian las notificaciones al iniciar la partida
+        //Se limpian las notificaciones y los puntos al iniciar la partida
         document.getElementById('avisos-content').innerHTML = ''; 
+        updateScoreDisplay();
 
         // Activar el resaltado para el primer jugador al inicio del juego
         const initialPlayerInfoElementId = getPlayerInfoElementId(data.turn);
@@ -823,8 +871,8 @@ async function unoButtonClick() {
     }
 }    
 
-function updateUnoButton(data) {
-    if (data.turn === 0 && data.clientCards.length === 1){
+function updateUnoButton(data,msg) {
+    if (data.turn === 0 && data.clientCards.length === 1 && msg.type === 'uno_warning'){
         unoBtn.classList.add('animation');
         unoBtn.classList.add('hover');
         unoBtn.classList.add('active');
@@ -835,7 +883,7 @@ function updateUnoButton(data) {
     }
 }
 
-function updateUI(data) {
+function updateUI(data,msg) {
 
     // Validar que el arreglo de cartas del jugador sea un array
     if (Array.isArray(data.clientCards)) {
@@ -859,7 +907,7 @@ function updateUI(data) {
     currentPlayerIndex = data.turn;
     direction = data.direction;
     discardPile = data.discardPile;
-    updateUnoButton(data);
+    updateUnoButton(data,msg);
 
     
     // Agregar el color en los bordes al jugador actual

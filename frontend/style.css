@@ -634,3 +634,11 @@ body{
 .aviso.uno-called { background-color: rgba(200, 200, 50, 0.7); }
 .aviso.color-changed { background-color: rgba(150, 50, 200, 0.5); }
 
+
+.music-toggle:hover {
+   background-color: rgba(255, 255, 255, 0.2);
+}
+/*Se ve así cuando no se escucha la música*/
+.music-toggle.muted {
+   opacity: 0.5;
+}
