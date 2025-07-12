@@ -90,6 +90,57 @@ function addNotification(message, type = '') {
         notificationsContent.removeChild(notificationsContent.lastChild);
     }
 }
+// Arreglo con los efcetos de sonido
+const soundEffects = {
+   draw2Sound: new Audio('./assets/sounds/draw2-sound.mp3'),
+   draw4Sound: new Audio('./assets/sounds/draw4-sound.mp3'),
+   shuffle: new Audio('./assets/sounds/shuffling-cards-1.mp3'),
+   skipSound: new Audio('./assets/sounds/skip-sound.mp3'),
+   unoCall: new Audio('./assets/sounds/uno-sound-1.mp3'),
+   wildSound: new Audio('./assets/sounds/wild-sound.mp3')
+};
+// Función para reproducir sonidos
+function playSound(sound) {
+   try {
+       soundEffects[sound].currentTime = 0; // Reinicia el sonido si ya está reproduciéndose
+       soundEffects[sound].play();
+   } catch (e) {
+       console.error("Error al reproducir sonido:", e);
+   }
+};
+//Como este es un sonido de fondo que siempre está presente se colocó como una constante aparte
+const gameMusic = new Audio('./assets/sounds/game-bg-music.mp3');
+gameMusic.loop = true;
+gameMusic.volume = 0.5;
+let isMusicEnabled = true;
+//La música inicia automático
+function startBackgroundMusic() {
+   const playPromise = gameMusic.play();
+   if (playPromise !== undefined) {
+       playPromise.catch(error => {
+           console.log("Reproducción automática prevenida:", error);
+       });
+   }
+}
+// Control de música, si está encendida o pagada
+const musicToggle = document.getElementById('musicToggle');
+function musicSound(){
+   startBackgroundMusic();
+   if (musicToggle) {
+       musicToggle.addEventListener('click', function() {
+           isMusicEnabled = !isMusicEnabled;
+          
+           if (isMusicEnabled) {
+               gameMusic.volume = 0.5;
+               startBackgroundMusic();
+               this.classList.remove('muted');
+           } else {
+               gameMusic.pause();
+               this.classList.add('muted');
+           }
+       });
+   }
+}
 const playAgainCallback = () => { // Usamos 'let' para poder reasignarla si es necesario, aunque aquí no lo sería
     hideGameVentana();
     isGamePaused = false;
