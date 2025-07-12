@@ -554,6 +554,8 @@ function getPlayerStatusElementId(playerIndex) {
 }
 
 function startGame(numPlayers) {
+    //Esta función hace que inicie al música y también la apaga clikeando el boton
+    musicSound();
     //En caso de reiniciar la pertida quita el color de los bordes del jugador anterior
     if (players[currentPlayerIndex]) {
         const prevPlayerInfoElementId = getPlayerInfoElementId(currentPlayerIndex);

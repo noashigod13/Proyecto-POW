@@ -639,3 +639,30 @@ body{
 .aviso.cards-drawn { background-color: rgba(50, 200, 50, 0.5); }
 .aviso.uno-called { background-color: rgba(200, 200, 50, 0.7); }
 .aviso.color-changed { background-color: rgba(150, 50, 200, 0.5); }
+/*Iconi para activar y desactivar la musica*/
+.music-toggle {
+   position: fixed;
+   top: 10px;
+   right: 10px;
+   background: whitesmoke;
+   border: none;
+   font-size: 30px;
+   cursor: pointer;
+   z-index: 1000;
+   padding: 5px;
+   border-radius: 50%;
+   width: 60px;
+   height: 60px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   transition: all 0.3s ease;
+}
+
+.music-toggle:hover {
+   background-color: rgba(255, 255, 255, 0.2);
+}
+/*Se ve así cuando no se escucha la música*/
+.music-toggle.muted {
+   opacity: 0.5;
+}
