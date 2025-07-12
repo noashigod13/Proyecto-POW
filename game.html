@@ -26,24 +26,52 @@
                 <div id="descarte" class="carta"></div>
             </div>
             <div id = pila class="box pila"></div>
+            <div class="flecha-box" id="flecha-top">
+                <div id="indicador-direccion-top" class="indicador-direccion">
+                    <div class="forma-flecha"></div>
+                </div>
+            </div>
+            <div class="flecha-box" id="flecha-bottom">
+                <div id="indicador-direccion-bottom" class="indicador-direccion">
+                    <div class="forma-flecha"></div>
+                </div>
+            </div>
             <div class="jinfo" id="jmain-info"></div>
             <div class="jinfo" id="jleft-info">
                 <div id="avatar"></div>
                 <div id="name">Jugador 4</div>
+                <div class="status-box" id="status-left"></div>
             </div>
             <div class="jinfo" id="jtop-info">
                 <div id="avatar"></div>
                 <div id="name">Jugador 3</div>
+                <div class="status-box" id="status-top"></div>
             </div>
             <div class="jinfo" id="jright-info">
                 <div id="avatar"></div>
                 <div id="name">Jugador 2</div>
+                <div class="status-box" id="status-right"></div>
             </div>
         </div>
-        <div class="out-button-container">
+        <div id="buttons-container">
             <button id="out">Salir</button>
+            <button id="restart">Reiniciar Partida</button>
         </div>
+    </div>
+    <div id="game-ventana-emergente" class="ventana-emergente">
+        <div id="game-ventana" class="ventana-content">
+            <h2 id="ventana-title"></h2>
+            <div id="ventana-body"></div>
+            <!-- Los botones se insertan a traves del js -->
+        </div>
+    </div>
+    <div class="puntaje-box">
+        <h3>Marcador</h3>
+        <div id="puntaje-display"></div>
+    </div>
+    <div id="avisos-box">
+        <div id="avisos-content"></div>
     </div>       
-     <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
